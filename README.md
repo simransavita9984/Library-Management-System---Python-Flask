@@ -30,6 +30,23 @@ A full-featured **Library Management System** built with **Python (Flask)** and 
 - ➕ Add / ✏️ Update Book or Movie
 - 👤 User Management (add / update users, admin toggle)
 
+## 📸 Screenshots
+
+### 🔐 Login Page
+![Login](screenshots/image1.png)
+
+### 👨‍💼 Admin Dashboard
+![Admin](screenshots/image2.png)
+
+### 👤 User Dashboard
+![User](screenshots/image3.png)
+
+### 📤 Book Issue
+![Issue](screenshots/image4.png)
+
+### 📊 Reports
+![Reports](screenshots/image5.png)
+
 ---
 
 ## 🛠️ Tech Stack
