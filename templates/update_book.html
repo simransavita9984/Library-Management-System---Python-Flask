@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% block title %}Update Book / Movie{% endblock %}
+{% block content %}
+<div class="layout-sidebar">
+    <div class="sidebar">
+        <h3>Maintenance</h3>
+        <a href="{{ url_for('add_membership') }}" class="sidebar-link">➕ Add Membership</a>
+        <a href="{{ url_for('update_membership') }}" class="sidebar-link">✏️ Update Membership</a>
+        <a href="{{ url_for('add_book') }}" class="sidebar-link">➕ Add Book/Movie</a>
+        <a href="{{ url_for('update_book') }}" class="sidebar-link active">✏️ Update Book/Movie</a>
+        <a href="{{ url_for('user_management') }}" class="sidebar-link">👤 User Management</a>
+    </div>
+    <div class="card">
+        <h2>✏️ Update Book / Movie</h2>
+
+        <!-- Step 1: Type & Search -->
+        <form method="POST">
+            <input type="hidden" name="action" value="search">
+            <div class="form-group">
+                <label>Type</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="item_type" value="Book" checked> 📚 Book</label>
+                    <label><input type="radio" name="item_type" value="Movie"> 🎬 Movie</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Serial No <span style="color:red">*</span></label>
+                <input list="serial-list" name="serial_no" placeholder="Type or select serial no" required
+                       value="{{ book.serial_no if book else '' }}">
+                <datalist id="serial-list">
+                    {% for b in books %}<option value="{{ b.serial_no }}">{{ b.name }}</option>{% endfor %}
+                </datalist>
+            </div>
+            <button type="submit" class="btn btn-info">🔍 Search</button>
+        </form>
+
+        {% if book %}
+        <hr style="margin: 24px 0; border-color:#eee;">
+        <h3>Book / Movie Details</h3>
+        <form method="POST">
+            <input type="hidden" name="action" value="update">
+            <input type="hidden" name="serial_no" value="{{ book.serial_no }}">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" name="name" value="{{ book.name }}" required>
+                </div>
+                <div class="form-group">
+                    <label>Serial No</label>
+                    <input type="text" value="{{ book.serial_no }}" readonly style="background:#f5f5f5;">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Author / Director</label>
+                    <input type="text" value="{{ book.author }}" readonly style="background:#f5f5f5;">
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <input type="text" value="{{ book.category }}" readonly style="background:#f5f5f5;">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Status</label>
+                    <select name="status">
+                        <option value="Available" {% if book.status == 'Available' %}selected{% endif %}>Available</option>
+                        <option value="Issued" {% if book.status == 'Issued' %}selected{% endif %}>Issued</option>
+                        <option value="Lost" {% if book.status == 'Lost' %}selected{% endif %}>Lost</option>
+                        <option value="Damaged" {% if book.status == 'Damaged' %}selected{% endif %}>Damaged</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="date" name="date" value="{{ book.procurement_date }}">
+                </div>
+            </div>
+            <div class="btn-group">
+                <button type="submit" class="btn btn-success">✔ Update</button>
+                <a href="{{ url_for('cancel') }}" class="btn btn-danger">✘ Cancel</a>
+                <a href="{{ url_for('home') }}" class="btn btn-secondary">← Home</a>
+            </div>
+        </form>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

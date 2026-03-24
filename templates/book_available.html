@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block title %}Book Availability{% endblock %}
+{% block content %}
+<div class="layout-sidebar">
+    <div class="sidebar">
+        <h3>Transactions</h3>
+        <a href="{{ url_for('book_available') }}" class="sidebar-link active">🔍 Book Available?</a>
+        <a href="{{ url_for('book_issue') }}" class="sidebar-link">📤 Issue Book</a>
+        <a href="{{ url_for('return_book') }}" class="sidebar-link">📥 Return Book</a>
+        <a href="{{ url_for('pay_fine') }}" class="sidebar-link">💰 Pay Fine</a>
+    </div>
+    <div>
+        <div class="card">
+            <h2>🔍 Book Availability</h2>
+            <form method="POST" class="search-form">
+                <div class="form-group">
+                    <label>Enter Book Name</label>
+                    <input list="book-names" name="book_name" placeholder="Type or select book name">
+                    <datalist id="book-names">
+                        {% for n in book_names %}<option value="{{ n }}">{% endfor %}
+                    </datalist>
+                </div>
+                <div class="form-group">
+                    <label>Enter Author</label>
+                    <input list="authors" name="author" placeholder="Type or select author">
+                    <datalist id="authors">
+                        {% for a in authors %}<option value="{{ a }}">{% endfor %}
+                    </datalist>
+                </div>
+                <div class="form-group" style="align-self:flex-end;">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </form>
+        </div>
+
+        {% if searched %}
+        <div class="card">
+            <h2>Search Results</h2>
+            {% if books %}
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Book Name</th><th>Author</th><th>Serial No</th>
+                        <th>Category</th><th>Available</th><th>Select to Issue</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for book in books %}
+                    <tr>
+                        <td>{{ book.name }}</td>
+                        <td>{{ book.author }}</td>
+                        <td>{{ book.serial_no }}</td>
+                        <td>{{ book.category }}</td>
+                        <td>
+                            <span class="badge {% if book.status == 'Available' %}badge-available{% else %}badge-issued{% endif %}">
+                                {{ 'Y' if book.status == 'Available' else 'N' }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if book.status == 'Available' %}
+                            <a href="{{ url_for('book_issue') }}?serial={{ book.serial_no }}" class="btn btn-sm btn-success">Issue</a>
+                            {% else %}
+                            <span style="color:#999;">Unavailable</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p class="no-data" style="text-align:center;color:#888;padding:20px;">No books found matching your search.</p>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <div class="btn-group">
+            <a href="{{ url_for('home') }}" class="btn btn-secondary">← Home</a>
+            <a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

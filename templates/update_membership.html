@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block title %}Update Membership{% endblock %}
+{% block content %}
+<div class="layout-sidebar">
+    <div class="sidebar">
+        <h3>Maintenance</h3>
+        <a href="{{ url_for('add_membership') }}" class="sidebar-link">➕ Add Membership</a>
+        <a href="{{ url_for('update_membership') }}" class="sidebar-link active">✏️ Update Membership</a>
+        <a href="{{ url_for('add_book') }}" class="sidebar-link">➕ Add Book/Movie</a>
+        <a href="{{ url_for('update_book') }}" class="sidebar-link">✏️ Update Book/Movie</a>
+        <a href="{{ url_for('user_management') }}" class="sidebar-link">👤 User Management</a>
+    </div>
+    <div class="card">
+        <h2>✏️ Update Membership</h2>
+
+        <!-- Step 1: Search -->
+        <form method="POST">
+            <input type="hidden" name="action" value="search">
+            <div class="form-group">
+                <label>Membership Number <span style="color:red">*</span></label>
+                <input type="text" name="membership_id" placeholder="e.g. MEM00001" required
+                       value="{{ member.membership_id if member else '' }}">
+            </div>
+            <button type="submit" class="btn btn-info">🔍 Search</button>
+        </form>
+
+        {% if member %}
+        <hr style="margin: 24px 0; border-color:#eee;">
+        <h3>Member Details</h3>
+        <div style="background:#f7faff;border-radius:8px;padding:16px;margin-bottom:20px;">
+            <p><strong>Name:</strong> {{ member.first_name }} {{ member.last_name }}</p>
+            <p><strong>Contact:</strong> {{ member.contact_number }}</p>
+            <p><strong>Membership:</strong> {{ member.membership_type }}</p>
+            <p><strong>Start Date:</strong> {{ member.start_date }}</p>
+            <p><strong>End Date:</strong> {{ member.end_date }}</p>
+            <p><strong>Status:</strong>
+                <span class="badge {% if member.is_active %}badge-active{% else %}badge-inactive{% endif %}">
+                    {{ 'Active' if member.is_active else 'Inactive' }}
+                </span>
+            </p>
+        </div>
+
+        <form method="POST">
+            <input type="hidden" name="action" value="update">
+            <input type="hidden" name="membership_id" value="{{ member.membership_id }}">
+            <div class="form-group">
+                <label>Extend Membership By</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="extension" value="6months" checked> 6 Months</label>
+                    <label><input type="radio" name="extension" value="1year"> 1 Year</label>
+                    <label><input type="radio" name="extension" value="2years"> 2 Years</label>
+                </div>
+                <p style="color:#888;font-size:0.82rem;margin-top:4px;">By default, 6 months extension is selected.</p>
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" name="remove">
+                    &nbsp; Cancel / Remove Membership
+                </label>
+            </div>
+            <div class="btn-group">
+                <button type="submit" class="btn btn-success">✔ Update</button>
+                <a href="{{ url_for('cancel') }}" class="btn btn-danger">✘ Cancel</a>
+                <a href="{{ url_for('home') }}" class="btn btn-secondary">← Home</a>
+            </div>
+        </form>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

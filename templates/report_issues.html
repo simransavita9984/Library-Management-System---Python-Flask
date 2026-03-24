@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="layout-sidebar">
+    <div class="sidebar">
+        <h3>Reports</h3>
+        <a href="{{ url_for('report_books') }}" class="sidebar-link">📚 Master List of Books</a>
+        <a href="{{ url_for('report_movies') }}" class="sidebar-link">🎬 Master List of Movies</a>
+        <a href="{{ url_for('report_memberships') }}" class="sidebar-link">🪪 Memberships</a>
+        <a href="{{ url_for('report_active_issues') }}" class="sidebar-link">📤 Active Issues</a>
+        <a href="{{ url_for('report_overdue') }}" class="sidebar-link">⚠️ Overdue Returns</a>
+        <a href="{{ url_for('report_issue_requests') }}" class="sidebar-link">📋 Issue Requests</a>
+    </div>
+    <div class="card">
+        <h2>📤 {{ title }}</h2>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Serial No (Book/Movie)</th><th>Book Name</th>
+                    <th>Membership ID</th><th>Issue Date</th><th>Return Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for issue in issues %}
+                <tr>
+                    <td>{{ issue.serial_no }}</td>
+                    <td>{{ issue.book_name }}</td>
+                    <td>{{ issue.membership_id }}</td>
+                    <td>{{ issue.issue_date }}</td>
+                    <td>{{ issue.return_date }}</td>
+                </tr>
+                {% else %}
+                <tr><td colspan="5" class="no-data">No active issues found.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="btn-group" style="margin-top:16px;">
+            <a href="{{ url_for('reports') }}" class="btn btn-secondary">← Reports</a>
+            <a href="{{ url_for('home') }}" class="btn btn-info">Home</a>
+            <a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

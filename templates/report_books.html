@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="layout-sidebar">
+    <div class="sidebar">
+        <h3>Reports</h3>
+        <a href="{{ url_for('report_books') }}" class="sidebar-link">📚 Master List of Books</a>
+        <a href="{{ url_for('report_movies') }}" class="sidebar-link">🎬 Master List of Movies</a>
+        <a href="{{ url_for('report_memberships') }}" class="sidebar-link">🪪 Memberships</a>
+        <a href="{{ url_for('report_active_issues') }}" class="sidebar-link">📤 Active Issues</a>
+        <a href="{{ url_for('report_overdue') }}" class="sidebar-link">⚠️ Overdue Returns</a>
+        <a href="{{ url_for('report_issue_requests') }}" class="sidebar-link">📋 Issue Requests</a>
+    </div>
+    <div class="card">
+        <h2>{{ title }}</h2>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Serial No</th><th>Name</th><th>Author/Director</th>
+                    <th>Category</th><th>Status</th><th>Cost</th><th>Procurement Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in books %}
+                <tr>
+                    <td>{{ book.serial_no }}</td>
+                    <td>{{ book.name }}</td>
+                    <td>{{ book.author }}</td>
+                    <td>{{ book.category }}</td>
+                    <td><span class="badge {% if book.status == 'Available' %}badge-available{% else %}badge-issued{% endif %}">{{ book.status }}</span></td>
+                    <td>₹{{ book.cost }}</td>
+                    <td>{{ book.procurement_date }}</td>
+                </tr>
+                {% else %}
+                <tr><td colspan="7" class="no-data">No records found.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="btn-group" style="margin-top:16px;">
+            <a href="{{ url_for('reports') }}" class="btn btn-secondary">← Reports</a>
+            <a href="{{ url_for('home') }}" class="btn btn-info">Home</a>
+            <a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

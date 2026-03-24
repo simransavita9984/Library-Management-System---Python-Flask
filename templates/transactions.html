@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Transactions{% endblock %}
+{% block content %}
+<div class="card" style="max-width:600px;margin:auto;">
+    <h2>🔄 Transactions</h2>
+    <div class="transaction-menu">
+        <a href="{{ url_for('book_available') }}"><span class="icon">🔍</span> Is Book Available?</a>
+        <a href="{{ url_for('book_issue') }}"><span class="icon">📤</span> Issue Book</a>
+        <a href="{{ url_for('return_book') }}"><span class="icon">📥</span> Return Book</a>
+        <a href="{{ url_for('pay_fine') }}"><span class="icon">💰</span> Pay Fine</a>
+    </div>
+    <div class="btn-group" style="margin-top:20px;">
+        <a href="{{ url_for('home') }}" class="btn btn-secondary">← Home</a>
+        <a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a>
+    </div>
+    {% if session.get('is_admin') %}
+    <p style="color:#888;font-size:0.82rem;margin-top:14px;">Note: Logged in as Admin — Home goes to Admin Home Page.</p>
+    {% else %}
+    <p style="color:#888;font-size:0.82rem;margin-top:14px;">Note: Logged in as User — Home goes to User Home Page.</p>
+    {% endif %}
+</div>
+{% endblock %}

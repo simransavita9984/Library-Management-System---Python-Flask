@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block title %}Add Book / Movie{% endblock %}
+{% block content %}
+<div class="layout-sidebar">
+    <div class="sidebar">
+        <h3>Maintenance</h3>
+        <a href="{{ url_for('add_membership') }}" class="sidebar-link">➕ Add Membership</a>
+        <a href="{{ url_for('update_membership') }}" class="sidebar-link">✏️ Update Membership</a>
+        <a href="{{ url_for('add_book') }}" class="sidebar-link active">➕ Add Book/Movie</a>
+        <a href="{{ url_for('update_book') }}" class="sidebar-link">✏️ Update Book/Movie</a>
+        <a href="{{ url_for('user_management') }}" class="sidebar-link">👤 User Management</a>
+    </div>
+    <div class="card">
+        <h2>➕ Add Book / Movie</h2>
+        <p style="color:#888;font-size:0.88rem;margin-bottom:20px;">All fields are required to submit the form.</p>
+        <form method="POST">
+            <div class="form-group">
+                <label>Type <span style="color:red">*</span></label>
+                <div class="radio-group">
+                    <label><input type="radio" name="item_type" value="Book" checked> 📚 Book</label>
+                    <label><input type="radio" name="item_type" value="Movie"> 🎬 Movie</label>
+                </div>
+                <p style="color:#888;font-size:0.82rem;margin-top:4px;">By default — Book is selected.</p>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Book / Movie Name <span style="color:red">*</span></label>
+                    <input type="text" name="name" placeholder="Enter name" required>
+                </div>
+                <div class="form-group">
+                    <label>Author / Director <span style="color:red">*</span></label>
+                    <input type="text" name="author" placeholder="Enter author or director" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Category <span style="color:red">*</span></label>
+                    <select name="category" required>
+                        <option value="">-- Select Category --</option>
+                        {% for cat in categories %}
+                        <option value="{{ cat }}">{{ cat }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Cost (₹) <span style="color:red">*</span></label>
+                    <input type="number" name="cost" placeholder="e.g. 299" min="0" step="0.01" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Date of Procurement <span style="color:red">*</span></label>
+                    <input type="date" name="procurement_date" required>
+                </div>
+                <div class="form-group">
+                    <label>Quantity / Copies</label>
+                    <input type="number" name="quantity" value="1" min="1" max="20">
+                    <p style="color:#888;font-size:0.8rem;margin-top:4px;">By default — 1.</p>
+                </div>
+            </div>
+            <div class="btn-group">
+                <button type="submit" class="btn btn-success">✔ Add Book / Movie</button>
+                <a href="{{ url_for('cancel') }}" class="btn btn-danger">✘ Cancel</a>
+                <a href="{{ url_for('home') }}" class="btn btn-secondary">← Home</a>
+            </div>
+        </form>
+        <p style="color:#888;font-size:0.82rem;margin-top:18px;">
+            Note: If logged in as Admin — Home takes to Admin Home Page.
+        </p>
+    </div>
+</div>
+{% endblock %}

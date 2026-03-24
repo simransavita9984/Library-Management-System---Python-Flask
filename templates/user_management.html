@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% block title %}User Management{% endblock %}
+{% block content %}
+<div class="layout-sidebar">
+    <div class="sidebar">
+        <h3>Maintenance</h3>
+        <a href="{{ url_for('add_membership') }}" class="sidebar-link">➕ Add Membership</a>
+        <a href="{{ url_for('update_membership') }}" class="sidebar-link">✏️ Update Membership</a>
+        <a href="{{ url_for('add_book') }}" class="sidebar-link">➕ Add Book/Movie</a>
+        <a href="{{ url_for('update_book') }}" class="sidebar-link">✏️ Update Book/Movie</a>
+        <a href="{{ url_for('user_management') }}" class="sidebar-link active">👤 User Management</a>
+    </div>
+    <div>
+        <div class="card">
+            <h2>👤 User Management</h2>
+            <p style="color:#888;font-size:0.88rem;margin-bottom:20px;">All fields are required. Unselecting Active = inactive user. Unselecting Admin = regular user.</p>
+            <form method="POST">
+                <div class="form-group">
+                    <label>User Type</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="user_type" value="new" checked id="newRadio" onclick="toggleExisting(false)"> New User</label>
+                        <label><input type="radio" name="user_type" value="existing" id="existingRadio" onclick="toggleExisting(true)"> Existing User</label>
+                    </div>
+                    <p style="color:#888;font-size:0.82rem;margin-top:4px;">By default — New User.</p>
+                </div>
+                <div class="form-group">
+                    <label>Name <span style="color:red">*</span></label>
+                    <input type="text" name="name" placeholder="Full name" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Username <span style="color:red">*</span></label>
+                        <input list="user-list" name="username" id="usernameField" placeholder="Login username" required>
+                        <datalist id="user-list">
+                            {% for u in users %}<option value="{{ u.username }}">{{ u.name }}</option>{% endfor %}
+                        </datalist>
+                    </div>
+                    <div class="form-group">
+                        <label>Password <span id="pwdNote" style="color:#888;font-weight:normal;">(leave blank to keep existing)</span></label>
+                        <input type="password" name="password" id="passwordField" placeholder="Password">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" name="is_active" checked>
+                        &nbsp; Active (checked = active user)
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" name="is_admin">
+                        &nbsp; Admin (checked = admin privileges)
+                    </label>
+                </div>
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-success">✔ Save User</button>
+                    <a href="{{ url_for('cancel') }}" class="btn btn-danger">✘ Cancel</a>
+                    <a href="{{ url_for('home') }}" class="btn btn-secondary">← Home</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>📋 All Users</h2>
+            <table class="data-table">
+                <thead>
+                    <tr><th>Username</th><th>Name</th><th>Role</th><th>Status</th></tr>
+                </thead>
+                <tbody>
+                    {% for u in users %}
+                    <tr>
+                        <td>{{ u.username }}</td>
+                        <td>{{ u.name }}</td>
+                        <td><span class="badge {% if u.is_admin %}badge-issued{% else %}badge-returned{% endif %}">{{ 'Admin' if u.is_admin else 'User' }}</span></td>
+                        <td><span class="badge {% if u.is_active %}badge-active{% else %}badge-inactive{% endif %}">{{ 'Active' if u.is_active else 'Inactive' }}</span></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+function toggleExisting(isExisting) {
+    const pwdNote = document.getElementById('pwdNote');
+    if (isExisting) {
+        pwdNote.textContent = '(leave blank to keep existing)';
+    } else {
+        pwdNote.textContent = '';
+    }
+}
+</script>
+{% endblock %}

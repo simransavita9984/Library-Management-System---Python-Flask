@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block title %}Pay Fine{% endblock %}
+{% block content %}
+<div class="layout-sidebar">
+    <div class="sidebar">
+        <h3>Transactions</h3>
+        <a href="{{ url_for('book_available') }}" class="sidebar-link">🔍 Book Available?</a>
+        <a href="{{ url_for('book_issue') }}" class="sidebar-link">📤 Issue Book</a>
+        <a href="{{ url_for('return_book') }}" class="sidebar-link">📥 Return Book</a>
+        <a href="{{ url_for('pay_fine') }}" class="sidebar-link active">💰 Pay Fine</a>
+    </div>
+    <div class="card">
+        <h2>💰 Pay Fine</h2>
+        {% if issue %}
+        <form method="POST">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Book Name</label>
+                    <input type="text" value="{{ issue.book_name }}" readonly style="background:#f5f5f5;">
+                </div>
+                <div class="form-group">
+                    <label>Serial No</label>
+                    <input type="text" value="{{ issue.serial_no }}" readonly style="background:#f5f5f5;">
+                </div>
+            </div>
+            {% if book %}
+            <div class="form-group">
+                <label>Author</label>
+                <input type="text" value="{{ book.author }}" readonly style="background:#f5f5f5;">
+            </div>
+            {% endif %}
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Issue Date</label>
+                    <input type="text" value="{{ issue.issue_date }}" readonly style="background:#f5f5f5;">
+                </div>
+                <div class="form-group">
+                    <label>Return Date</label>
+                    <input type="text" value="{{ issue.return_date }}" readonly style="background:#f5f5f5;">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Actual Return Date</label>
+                <input type="text" value="{{ today }}" readonly style="background:#f5f5f5;">
+            </div>
+
+            {% if fine > 0 %}
+            <div class="fine-box">
+                <h4>⚠️ Fine Calculated: ₹{{ fine }}</h4>
+                <p>Overdue by {{ (today - issue.return_date).days }} day(s) × ₹5/day</p>
+            </div>
+            {% else %}
+            <div class="fine-box no-fine">
+                <h4>✅ No Fine — Book returned on time!</h4>
+            </div>
+            {% endif %}
+
+            <div class="form-group">
+                <label>Fine Calculated</label>
+                <input type="text" value="₹ {{ fine }}" readonly style="background:#f5f5f5;">
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" name="fine_paid" {% if fine == 0 %}checked{% endif %}>
+                    Fine Paid {% if fine == 0 %}(No fine applicable){% else %}<span style="color:red">*Required if fine exists</span>{% endif %}
+                </label>
+            </div>
+            <div class="form-group">
+                <label>Remarks <span style="color:#888;font-weight:normal;">(Optional)</span></label>
+                <textarea name="remarks"></textarea>
+            </div>
+            <div class="btn-group">
+                <button type="submit" class="btn btn-success">✔ Confirm Return</button>
+                <a href="{{ url_for('cancel') }}" class="btn btn-danger">✘ Cancel</a>
+                <a href="{{ url_for('home') }}" class="btn btn-secondary">← Home</a>
+            </div>
+        </form>
+        {% else %}
+        <p style="color:#888;">No pending return found. Please go back and select a book to return.</p>
+        <a href="{{ url_for('return_book') }}" class="btn btn-primary" style="margin-top:12px;">← Return Book</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Transaction Successful{% endblock %}
+{% block content %}
+<div class="center-page">
+    <div class="big-icon">✅</div>
+    <h2>Transaction Completed Successfully!</h2>
+    <p>Your action has been saved to the system.</p>
+    <div class="btn-group" style="justify-content:center;">
+        <a href="{{ url_for('transactions') }}" class="btn btn-primary">🔄 Transactions</a>
+        <a href="{{ url_for('home') }}" class="btn btn-info">🏠 Home</a>
+        <a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a>
+    </div>
+</div>
+{% endblock %}

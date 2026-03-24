@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Home – Library Management{% endblock %}
+{% block content %}
+<div class="home-header">
+    <h1>📚 User Home Page</h1>
+    <p>Welcome, <strong>{{ session.get('name') }}</strong>! What would you like to do today?</p>
+</div>
+
+<div class="menu-grid">
+    <a href="{{ url_for('reports') }}" class="menu-card">
+        <div class="icon">📊</div>
+        <h3>Reports</h3>
+        <p>View books, movies & membership lists</p>
+    </a>
+    <a href="{{ url_for('transactions') }}" class="menu-card">
+        <div class="icon">🔄</div>
+        <h3>Transactions</h3>
+        <p>Check availability, issue & return books</p>
+    </a>
+    <a href="{{ url_for('logout') }}" class="menu-card">
+        <div class="icon">🚪</div>
+        <h3>Log Out</h3>
+        <p>Sign out of your account</p>
+    </a>
+</div>
+
+<div class="card">
+    <h2>📋 Product Category Codes</h2>
+    <table class="category-table">
+        <thead>
+            <tr><th>Code (Books)</th><th>Code (Movies)</th><th>Category</th></tr>
+        </thead>
+        <tbody>
+            {% for cat in [('SC(B)', 'SC(M)', 'Science'), ('EC(B)', 'EC(M)', 'Economics'), ('FC(B)', 'FC(M)', 'Fiction'), ('CH(B)', 'CH(M)', 'Children'), ('PD(B)', 'PD(M)', 'Personal Development')] %}
+            <tr><td>{{ cat[0] }}000001 – {{ cat[0] }}000004</td><td>{{ cat[1] }}000001 – {{ cat[1] }}000004</td><td>{{ cat[2] }}</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

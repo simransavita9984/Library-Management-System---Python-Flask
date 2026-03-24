@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Reports{% endblock %}
+{% block content %}
+<div class="layout-sidebar">
+    <div class="sidebar">
+        <h3>Available Reports</h3>
+        <a href="{{ url_for('report_books') }}" class="sidebar-link">📚 Master List of Books</a>
+        <a href="{{ url_for('report_movies') }}" class="sidebar-link">🎬 Master List of Movies</a>
+        <a href="{{ url_for('report_memberships') }}" class="sidebar-link">🪪 Master List of Memberships</a>
+        <a href="{{ url_for('report_active_issues') }}" class="sidebar-link">📤 Active Issues</a>
+        <a href="{{ url_for('report_overdue') }}" class="sidebar-link">⚠️ Overdue Returns</a>
+        <a href="{{ url_for('report_issue_requests') }}" class="sidebar-link">📋 Pending Issue Requests</a>
+    </div>
+    <div class="card">
+        <h2>📊 Reports</h2>
+        <p style="color:#666;margin-bottom:20px;">Select a report from the sidebar to view details.</p>
+        <div class="menu-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px,1fr));">
+            <a href="{{ url_for('report_books') }}" class="menu-card"><div class="icon">📚</div><h3>Books</h3><p>Master list of all books</p></a>
+            <a href="{{ url_for('report_movies') }}" class="menu-card"><div class="icon">🎬</div><h3>Movies</h3><p>Master list of all movies</p></a>
+            <a href="{{ url_for('report_memberships') }}" class="menu-card"><div class="icon">🪪</div><h3>Memberships</h3><p>All active memberships</p></a>
+            <a href="{{ url_for('report_active_issues') }}" class="menu-card"><div class="icon">📤</div><h3>Active Issues</h3><p>Currently issued books</p></a>
+            <a href="{{ url_for('report_overdue') }}" class="menu-card"><div class="icon">⚠️</div><h3>Overdue</h3><p>Overdue returns with fine</p></a>
+            <a href="{{ url_for('report_issue_requests') }}" class="menu-card"><div class="icon">📋</div><h3>Issue Requests</h3><p>All issue requests log</p></a>
+        </div>
+        <div class="btn-group" style="margin-top:16px;">
+            <a href="{{ url_for('home') }}" class="btn btn-secondary">← Home</a>
+            <a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

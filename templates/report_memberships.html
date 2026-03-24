@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}Master List of Memberships{% endblock %}
+{% block content %}
+<div class="layout-sidebar">
+    <div class="sidebar">
+        <h3>Reports</h3>
+        <a href="{{ url_for('report_books') }}" class="sidebar-link">📚 Master List of Books</a>
+        <a href="{{ url_for('report_movies') }}" class="sidebar-link">🎬 Master List of Movies</a>
+        <a href="{{ url_for('report_memberships') }}" class="sidebar-link">🪪 Memberships</a>
+        <a href="{{ url_for('report_active_issues') }}" class="sidebar-link">📤 Active Issues</a>
+        <a href="{{ url_for('report_overdue') }}" class="sidebar-link">⚠️ Overdue Returns</a>
+        <a href="{{ url_for('report_issue_requests') }}" class="sidebar-link">📋 Issue Requests</a>
+    </div>
+    <div class="card">
+        <h2>🪪 Master List of Memberships</h2>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Membership ID</th><th>Name</th><th>Contact</th>
+                    <th>Aadhar Card</th><th>Start Date</th><th>End Date</th>
+                    <th>Status</th><th>Fine Pending</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for m in memberships %}
+                <tr>
+                    <td>{{ m.membership_id }}</td>
+                    <td>{{ m.first_name }} {{ m.last_name }}</td>
+                    <td>{{ m.contact_number }}</td>
+                    <td>{{ m.aadhar_card }}</td>
+                    <td>{{ m.start_date }}</td>
+                    <td>{{ m.end_date }}</td>
+                    <td><span class="badge {% if m.is_active %}badge-active{% else %}badge-inactive{% endif %}">{{ 'Active' if m.is_active else 'Inactive' }}</span></td>
+                    <td>{% if m.fine_pending > 0 %}₹{{ m.fine_pending }}{% else %}—{% endif %}</td>
+                </tr>
+                {% else %}
+                <tr><td colspan="8" class="no-data">No memberships found.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="btn-group" style="margin-top:16px;">
+            <a href="{{ url_for('reports') }}" class="btn btn-secondary">← Reports</a>
+            <a href="{{ url_for('home') }}" class="btn btn-info">Home</a>
+            <a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

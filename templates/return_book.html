@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block title %}Return Book{% endblock %}
+{% block content %}
+<div class="layout-sidebar">
+    <div class="sidebar">
+        <h3>Transactions</h3>
+        <a href="{{ url_for('book_available') }}" class="sidebar-link">🔍 Book Available?</a>
+        <a href="{{ url_for('book_issue') }}" class="sidebar-link">📤 Issue Book</a>
+        <a href="{{ url_for('return_book') }}" class="sidebar-link active">📥 Return Book</a>
+        <a href="{{ url_for('pay_fine') }}" class="sidebar-link">💰 Pay Fine</a>
+    </div>
+    <div class="card">
+        <h2>📥 Return Book</h2>
+        <form method="POST">
+            <div class="form-group">
+                <label>Book Name <span style="color:red">*</span></label>
+                <input type="text" id="bookNameField" placeholder="Auto-populated" readonly style="background:#f5f5f5;">
+            </div>
+            <div class="form-group">
+                <label>Author Name</label>
+                <input type="text" id="authorField" placeholder="Auto-populated" readonly style="background:#f5f5f5;">
+            </div>
+            <div class="form-group">
+                <label>Serial No <span style="color:red">*</span></label>
+                <select name="serial_no" id="serialSelect" required onchange="fillIssueInfo(this)">
+                    <option value="">-- Select Serial No --</option>
+                    {% for s in serial_nos %}
+                    <option value="{{ s }}">{{ s }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Issue Date</label>
+                    <input type="text" id="issueDateField" placeholder="Auto-populated" readonly style="background:#f5f5f5;">
+                </div>
+                <div class="form-group">
+                    <label>Return Date</label>
+                    <input type="date" name="return_date" id="returnDate">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Remarks <span style="color:#888;font-weight:normal;">(Optional)</span></label>
+                <textarea name="remarks" placeholder="Any remarks..."></textarea>
+            </div>
+            <div class="btn-group">
+                <button type="submit" class="btn btn-success">✔ Confirm Return</button>
+                <a href="{{ url_for('cancel') }}" class="btn btn-danger">✘ Cancel</a>
+                <a href="{{ url_for('home') }}" class="btn btn-secondary">← Home</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function fillIssueInfo(sel) {
+    const serial = sel.value;
+    if (!serial) return;
+    fetch('/get_issue_info?serial_no=' + serial)
+        .then(r => r.json())
+        .then(data => {
+            document.getElementById('bookNameField').value = data.book_name || '';
+            document.getElementById('authorField').value = data.author || '';
+            document.getElementById('issueDateField').value = data.issue_date || '';
+            document.getElementById('returnDate').value = data.return_date || '';
+        });
+}
+</script>
+{% endblock %}
