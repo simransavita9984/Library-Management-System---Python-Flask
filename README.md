@@ -44,8 +44,8 @@ A full-featured **Library Management System** built with **Python (Flask)** and 
 ### 📤 Book Issue
 ![Issue](screenshots/image4.png)
 
-### 📊 Reports
-![Reports](screenshots/image5.png)
+### 📊 Admin Page
+![Admin Page](screenshots/image5.png)
 
 ---
 
